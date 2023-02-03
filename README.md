@@ -1,5 +1,5 @@
 # **Guide Robot Using Scout mini Agilex Robot**
-___
+
 The objective of this project is to make an interactive guide robot in the university which helps to arrive people to their required place all over the university. It is an interactive robot which autonomously navigates to the required place.
 
 This readme file contains the instructions for running the project either in simulation or in the real robot.
