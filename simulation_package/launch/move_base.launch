@@ -1,0 +1,20 @@
+<launch>
+
+        <!--  ************** Navigation ***************  -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	<remap from="scan" to="/scan" />
+    	<remap from="cmd_vel" to="/cmd_vel"/>
+    	<remap from="odom" to="/odometry/filtered" />
+    <rosparam file="$(find guide_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+
+    <rosparam file="$(find guide_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+    <rosparam file="$(find guide_robot)/config/local_costmap_params.yaml" command="load" />
+
+    <rosparam file="$(find guide_robot)/config/global_costmap_params.yaml" command="load" />
+
+    <rosparam file="$(find guide_robot)/config/base_local_planner_params.yaml" command="load" />
+
+    <rosparam file="$(find guide_robot)/config/move_base_params.yaml" command="load" />
+  </node>
+</launch>

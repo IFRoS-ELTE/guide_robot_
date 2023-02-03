@@ -1,0 +1,75 @@
+<launch>
+  <arg name="robot_namespace" default="/"/>
+  <!-- argument for imu use -->
+  <arg name="imu_enable" default="true" />   
+
+  <include file="$(find guide_robot)/launch/spawn_guide_robot.launch"/>
+  <node name="rviz"  pkg="rviz"  type="rviz"  args="-d $(find guide_robot)/rviz/guide_robot_rviz.rviz" />
+
+      
+  <!-- Load the surrounding environment into Gazebo -->
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find guide_robot)/worlds/neiborhood_guide.world"/> 
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+  </include>
+  
+  <arg name="map_file" default="$(find guide_robot)/map/mymap_empty.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+  <!-- Convert the GPS latitude and longitude data into XY coordinates -->
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+
+      <param name="magnetic_declination_radians" value="0"/>
+      <param name="yaw_offset" value="0"/>
+      <param name="zero_altitude" value="true"/>
+
+      <param name="broadcast_utm_transform" value="false"/>
+      <param name="publish_filtered_gps" value="false"/>
+
+      <param name="use_odometry_yaw" value="false"/>
+      <param name="wait_for_datum" value="false"/>
+
+      <param name="predict_to_current_time" value="true"/>
+
+      <remap from="/imu/data" to="/imu/data" />
+      <remap from="/gps/fix" to="/gnss" />
+      <remap from="/odometry/filtered" to="/odometry/filtered" />
+  </node>
+
+
+  <!-- Run the ekf for map to odom config -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_with_gps">
+      <rosparam command="load" file="$(find guide_robot)/config/robot_localization_with_gps.yaml" />
+  </node>
+
+  <!--Interpolator--> 
+    <node name="interpolator" pkg="tracking_pid" type="path_interpolator">
+        <param name="target_x_vel" value="1"/>
+        <param name="target_x_acc" value="1"/>
+        <param name="target_yaw_vel" value="1"/>
+        <param name="target_yaw_acc" value="1"/>    
+    </node>-->
+
+  <!-- PID controller--> 
+    <node name="controller" pkg="tracking_pid" type="controller" output="screen">
+        <remap from="move_base/cmd_vel" to="/cmd_vel"/>
+        <remap from="local_trajectory" to="trajectory"/>
+        <param name="controller_debug_enabled" value="True"/>
+        <param name="track_base_link" value="true"/>
+        <param name="l" value="0.08"/>
+        <param name="Kp_long" value="1"/>
+        <param name="Ki_long" value="0.2"/>
+        <param name="Kd_long" value="0.5"/>
+        <param name="Ki_lat" value="0.0"/>
+        <param name="Kp_lat" value="0.0"/>
+        <param name="Kd_lat" value="0.0"/>
+        <param name="Kp_ang" value="1"/>
+        <param name="Ki_ang" value="0.16"/>
+        <param name="Kd_ang" value="1"/>
+        <param name="map_frame" value="map"/>
+    </node>
+</launch>

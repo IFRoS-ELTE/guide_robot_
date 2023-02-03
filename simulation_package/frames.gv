@@ -1,0 +1,15 @@
+digraph G {
+"base_link" -> "inertial_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"odom" -> "base_link"[label=" Broadcaster: /gazebo\nAverage rate: 100.2\nBuffer length: 4.99\nMost recent transform: 55.867\nOldest transform: 50.877\n"];
+"base_link" -> "velodyne_base_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"velodyne_base_link" -> "velodyne"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"map" -> "odom"[label=" Broadcaster: /static_transform_publisher_1674939651684959178\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 55.956\nOldest transform: 51.056\n"];
+"base_link" -> "front_left_wheel_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 50.202\nBuffer length: 4.96\nMost recent transform: 55.851\nOldest transform: 50.891\n"];
+"base_link" -> "front_right_wheel_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 50.202\nBuffer length: 4.96\nMost recent transform: 55.851\nOldest transform: 50.891\n"];
+"base_link" -> "rear_left_wheel_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 50.202\nBuffer length: 4.96\nMost recent transform: 55.851\nOldest transform: 50.891\n"];
+"base_link" -> "rear_right_wheel_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 50.202\nBuffer length: 4.96\nMost recent transform: 55.851\nOldest transform: 50.891\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 55.872"[ shape=plaintext ] ;
+}->"map";
+}
