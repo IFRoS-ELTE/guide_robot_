@@ -144,7 +144,7 @@ And then in Rviz, Add the **Map** and hide the **AerialMapDisplay** to only show
 In order to navigate the robot either in the google map or by the octomap and giving it a specific goal use:
 
 ```
-roslaunch pomona_localization move_base.launch
+roslaunch scout_bringup move_base.launch
 ```
 
 #### **Results of the Real Robot**
