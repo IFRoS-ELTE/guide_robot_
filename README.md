@@ -134,17 +134,17 @@ The previous command will launch the robot in a google map by using the informat
 But if there is no internet access; and need to test the localization, we can use the octomap to show the map for the real robot by using this commands:
 
 ```
-rosrun scout_mini_gazebo laser_scan_to_point_cloud_node.py
+rosrun pomona_localization laserscan_to_pointcloud.py
 ```
 ```
-roslaunch scout_mini_gazebo octomap_nav.launch
+roslaunch pomona_localization octomap_nav.launch
 ```
 And then in Rviz, Add the **Map** and hide the **AerialMapDisplay** to only show the obtained map from octomap.
 
 In order to navigate the robot either in the google map or by the octomap and giving it a specific goal use:
 
 ```
-roslaunch scout_bringup move_base.launch
+roslaunch pomona_localization move_base.launch
 ```
 
 #### **Results of the Real Robot**
